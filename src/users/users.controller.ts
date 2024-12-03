@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Patch,
+  Delete,
+  Query
+} from '@nestjs/common';
 
 @Controller('users') // /users handles this route
 export class UsersController {
