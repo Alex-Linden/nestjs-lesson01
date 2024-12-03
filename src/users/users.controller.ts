@@ -1,15 +1,10 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Delete, Query } from '@nestjs/common';
 
 @Controller('users') // /users handles this route
 export class UsersController {
-  /*
-  POST /users
-  PATCH /users/:id
-  DELETE /users/:id
-  */
-  // GET /users returns all users
+  // GET /users or /users?role=value returns all users or filtered users
   @Get()
-  findAll() {
+  findAll(@Query('role') role?: 'INTERN' | 'ADMIN' | 'ENGINEER') {
     return [];
   }
   // GET /users/:id returns a single user
@@ -23,5 +18,16 @@ export class UsersController {
   @Post()
   create(@Body() user: {}) {
     return user;
+  }
+  // PATCH /users/:id updates a user
+  // body: { name: 'Jane Doe', email: 'jane@example.com' }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() userUpdate: {}) {
+    return { id, ...userUpdate };
+  }
+  // DELETE /users/:id deletes a user
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return { id };
   }
 }
