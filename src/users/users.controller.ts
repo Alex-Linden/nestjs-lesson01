@@ -14,6 +14,9 @@ export class UsersController {
   // GET /users or /users?role=value returns all users or filtered users
   @Get()
   findAll(@Query('role') role?: 'INTERN' | 'ADMIN' | 'ENGINEER') {
+    if (role) {
+      return [];
+    }
     return [];
   }
   // GET /users/:id returns a single user
