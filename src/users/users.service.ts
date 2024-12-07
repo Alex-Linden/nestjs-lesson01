@@ -47,5 +47,17 @@ export class UsersService {
       }
       return user;
     });
+
+    this.findOne(id);
+  }
+
+  remove(id: number) { // removeById
+    const removedUser = this.findOne(id);
+    if (!removedUser) {
+      throw new Error('User not found');
+    }
+    this.users = this.users.filter(user => user.id !== id);
+
+    return removedUser;
   }
 }
