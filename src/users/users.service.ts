@@ -12,13 +12,13 @@ export class UsersService {
 
   findAll(role?: 'INTERN' | 'ADMIN' | 'ENGINEER') {
     if (role) {
-      return this.users.filter(user => user.role === role);
+      return this.users.filter((user) => user.role === role);
     }
     return this.users;
   }
 
   findOne(id: number) {
-    const user = this.users.find(user => user.id === id);
+    const user = this.users.find((user) => user.id === id);
     if (!user) {
       throw new Error('User not found');
     }
@@ -26,37 +26,41 @@ export class UsersService {
   }
 
   create(user: {
-    name: string,
-    email: string,
+    name: string;
+    email: string;
     role: 'INTERN' | 'ADMIN' | 'ENGINEER';
   }) {
     const usersByHighestId = [...this.users].sort((a, b) => b.id - a.id);
-    const newUser = { ...user, id: usersByHighestId[0].id + 1 };
+    const newUser = { id: usersByHighestId[0].id + 1, ...user };
     this.users.push(newUser);
     return newUser;
   }
 
-  update(id: number, userUpdate: {
-    name?: string,
-    email?: string,
-    role?: 'INTERN' | 'ADMIN' | 'ENGINEER';
-  }) {
-    this.users = this.users.map(user => {
+  update(
+    id: number,
+    userUpdate: {
+      name?: string;
+      email?: string;
+      role?: 'INTERN' | 'ADMIN' | 'ENGINEER';
+    },
+  ) {
+    this.users = this.users.map((user) => {
       if (user.id === id) {
         return { ...user, ...userUpdate };
       }
       return user;
     });
 
-    this.findOne(id);
+    return this.findOne(id);
   }
 
-  remove(id: number) { // removeById
+  remove(id: number) {
+    // removeById
     const removedUser = this.findOne(id);
     if (!removedUser) {
       throw new Error('User not found');
     }
-    this.users = this.users.filter(user => user.id !== id);
+    this.users = this.users.filter((user) => user.id !== id);
 
     return removedUser;
   }
