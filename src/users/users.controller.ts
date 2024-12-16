@@ -7,12 +7,13 @@ import {
   Patch,
   Delete,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users') // /users handles this route
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
   // GET /users or /users?role=value returns all users or filtered users
   @Get()
   findAll(@Query('role') role?: 'INTERN' | 'ADMIN' | 'ENGINEER') {
@@ -20,8 +21,8 @@ export class UsersController {
   }
   // GET /users/:id returns a single user
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findOne(id);
   }
 
   // POST /users creates a new user
@@ -41,7 +42,7 @@ export class UsersController {
   // body: { name: 'Jane Doe', email: 'jane@example.com' }
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
     userUpdate: {
       name?: string;
@@ -49,11 +50,11 @@ export class UsersController {
       role?: 'INTERN' | 'ADMIN' | 'ENGINEER';
     },
   ) {
-    return this.usersService.update(+id, userUpdate);
+    return this.usersService.update(id, userUpdate);
   }
   // DELETE /users/:id deletes a user
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id);
   }
 }
